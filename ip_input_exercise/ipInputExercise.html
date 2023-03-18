@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="Ip-input.class.js"></script>
+  </head>
+  <body>
+    <label for="">Dirección IP: </label>
+    <input
+      type="text"
+      class="ip_input"
+    />
+    <div id="error"></div>
+    <button onclick="onSend()">Enviar</button>
+    <script>
+
+      const ipInputList = $(".ip_input");
+
+      for (let index = 0; index < ipInputList.length; index++) {
+        ipInputList[index] = new IpInput(ipInputList[index]);
+      }
+
+      function onSend() {
+        if (ipInputList[0].valid) console.log("enviado => ", ipInputList[0].value);
+        else $("#error").html("No es una dirección IP valida");
+      }
+    </script>
+  </body>
+</html>
