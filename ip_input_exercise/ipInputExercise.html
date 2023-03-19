@@ -25,7 +25,10 @@
       }
 
       function onSend() {
-        if (ipInputList[0].valid) console.log("enviado => ", ipInputList[0].value);
+        if (ipInputList[0].valid) {
+          console.log("enviado => ", ipInputList[0].value);
+          $("#error").html("")
+        }
         else $("#error").html("No es una dirección IP valida");
       }
     </script>
