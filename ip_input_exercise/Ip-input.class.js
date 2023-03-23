@@ -1,16 +1,22 @@
 function IpInput(input) {
   this.valid = false;
   this.value = "";
-  
+
   let ipLength = 0;
   let byteLength = 0;
   let byteSection = 1;
   let nextPointDelete = false;
 
   input.placeholder = "_ _ _ . _ _ _ . _ _ _ . _ _ _";
+  input.style = "width: 10rem;"
+
+  input.onpaste = function (e) {
+    e.preventDefault();
+    alert("esta acción está prohibida");
+  }
 
   input.addEventListener("input", ($event) => {
-    const value = $event.target.value;
+    let value = $event.target.value;
 
     if (value.length < ipLength) {
       if (nextPointDelete) handlePointDelete(value);
@@ -35,6 +41,14 @@ function IpInput(input) {
       return;
     }
 
+    let bytes = value.split(".")
+    let character = getValidNumber(value[value.length - 1], bytes[bytes.length - 1])
+    if (character != value[value.length - 1]){
+      let aux = value.slice(0, value.length - 1);
+      input.value = aux + character
+      value = input.value
+    }
+
     this.value = input.value;
     if (value[value.length - 1] == ".") return handlePointWrite();
     handleCharacterWrite();
@@ -51,6 +65,19 @@ function IpInput(input) {
       ? true
       : false;
   };
+
+  const getValidNumber = (character, lastByte) => {
+    if (character == ".")
+     return character;
+    let number = Number(character) ? Number(character) : 0
+    if (byteLength == 0 && number > 2)
+      return "2"
+    if (byteLength == 1 && lastByte[0] == "2" && number > 5)
+      return "5"
+    if (byteLength == 2 && lastByte[0] == "2" && lastByte[1] == "5" && number > 5)
+      return "5"
+    return character
+  }
 
   const removeLastCharacter = (value) => {
     return value.slice(0, value.length - 1);
